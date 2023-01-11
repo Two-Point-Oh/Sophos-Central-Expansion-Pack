@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<remv1:Remediation-Plugin IsLogRhythmPlugin="false" Version="1" xmlns:remv1="RemediationVersion1.xsd" Guid="48656C70-4D65-4572-6963-486172742020" Name="Sophos Central Expansion Pack v2 TEST">
+
+  <remv1:Action Name="Create Sophos Central Configuration file" Command="powershell.exe">
+     <remv1:ConstantParameter Name="Script" Switch="-file Configuration.ps1" Order="1" />
+     <remv1:EncryptedParameter> 
+      <remv1:StringParameter Name="ClientID *" Switch="-ClientID " Order="2" />
+     </remv1:EncryptedParameter> 
+     <remv1:EncryptedParameter> 
+      <remv1:StringParameter Name="ClientPassword *" Switch="-ClientPassword " Order="3" />
+     </remv1:EncryptedParameter> 
+   </remv1:Action>
+
+  <remv1:Action Name="Scan Endpoint" Command="powershell.exe">
+    <remv1:ConstantParameter Name="Script" Order="1" Switch="-file EndpointScan.ps1"/>
+    <remv1:StringParameter Name="ToBeScanned * (IP,Host,User)" Order="2" Switch="-ToBeScanned "/>
+  </remv1:Action>
+
+  <remv1:Action Name="Isolate Endpoint" Command="powershell.exe">
+    <remv1:ConstantParameter Name="Script" Order="1" Switch="-file IsolateEndpoint.ps1"/>
+    <remv1:StringParameter Name="ToBeIsolated * (IP,Host,User)" Order="2" Switch="-ToBeIsolated "/>
+  </remv1:Action>
+  
+  <remv1:Action Name="Query Endpoint" Command="powershell.exe">
+    <remv1:ConstantParameter Name="Script" Order="1" Switch="-file QueryEndpoint.ps1"/>
+    <remv1:StringParameter Name="ToBeQueried * (IP,Host,User)" Order="2" Switch="-ToBeQueried "/>
+	<remv1:StringParameter Name="InformationField(s) single or csv" Order="3" Switch="-InformationFields ">
+		<remv1:DefaultInput>
+			<remv1:StaticInput Value="id,type,tenant,hostname,health,os,ipv4Addresses,macAddresses,group,associatedPerson,tamperProtectionEnabled,assignedProducts,lastSeenAt,lockdown,isolation"/>
+		</remv1:DefaultInput>
+	</remv1:StringParameter>
+  </remv1:Action>
+
+</remv1:Remediation-Plugin>
